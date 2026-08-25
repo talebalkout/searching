@@ -1929,37 +1929,243 @@
   }
 
   /* =========================================================
-     PHASE 1 FINAL CLEANUP
-     Secondary destinations use one restrained top-bar language.
+     iPHONE PORTRAIT PASS
+     Desktop prototype stays unchanged. Narrow real devices use
+     the viewport itself instead of the simulated desktop phone.
      ========================================================= */
-  .secondary-screen-head{
-    min-height:58px;
-    padding-top:10px!important;
-    padding-bottom:10px!important;
-    font-size:18px!important;
-    font-weight:780!important;
-    letter-spacing:-.3px!important;
+  @media (max-width: 600px) {
+    html,body{
+      width:100%;
+      min-width:0;
+      height:100%;
+      margin:0;
+      padding:0;
+      overflow:hidden;
+      background:var(--paper);
+    }
+    body{
+      display:block;
+    }
+    .phone{
+      width:100vw;
+      max-width:none;
+      height:100dvh;
+      min-height:100svh;
+      padding:0;
+      margin:0;
+      border-radius:0;
+      background:var(--paper);
+      box-shadow:none;
+      overflow:hidden;
+    }
+    .screen{
+      width:100%;
+      height:100%;
+      border-radius:0;
+      padding-top:env(safe-area-inset-top);
+      padding-left:env(safe-area-inset-left);
+      padding-right:env(safe-area-inset-right);
+    }
+
+    /* iOS already supplies the device chrome in Safari/Home Screen mode. */
+    .notch,.sidebtn,.statusbar{display:none!important;}
+
+    /* Persistent menu becomes safe-area anchored, not desktop-coordinate anchored. */
+    .app-menu-button{
+      top:8px!important;
+      left:14px!important;
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      box-shadow:0 3px 12px rgba(28,24,18,.08),0 1px 2px rgba(28,24,18,.04);
+    }
+
+    /* Main headers line up with the fixed menu on real iPhone portrait. */
+    .panel[data-screen="lists"] .section-head,
+    .panel[data-screen="places"] .section-head,
+    .panel[data-screen="favorites"] .section-head,
+    .panel[data-screen="profile"] .section-head,
+    .panel[data-screen="profile"] .board-sticky-header .section-head{
+      min-height:58px!important;
+      padding-top:15px!important;
+      padding-left:70px!important;
+      padding-right:14px!important;
+    }
+
+    /* 1. Let list photography breathe on phone. */
+    .panel[data-screen="list-detail"] #listCover{
+      height:190px!important;
+      margin:0 14px!important;
+      border-radius:20px!important;
+    }
+    .panel[data-screen="list-detail"] .list-cover-title{
+      font-size:23px;
+    }
+
+    /* 3. Published Board content starts immediately beneath its chrome.
+       The back control floats over the photography instead of creating
+       an empty toolbar band above it. */
+    .panel[data-screen="shared-list-preview"],
+    .panel[data-screen="shared-place-preview"]{
+      position:relative;
+    }
+    .panel[data-screen="shared-list-preview"] > .list-toolbar,
+    .panel[data-screen="shared-place-preview"] > .list-toolbar{
+      position:absolute!important;
+      top:0;
+      left:0;
+      right:0;
+      z-index:12;
+      min-height:54px!important;
+      padding:6px 10px!important;
+      background:linear-gradient(180deg,rgba(0,0,0,.34),rgba(0,0,0,0))!important;
+      border:0!important;
+      box-shadow:none!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+    }
+    .panel[data-screen="shared-list-preview"] > .list-toolbar .icon-btn,
+    .panel[data-screen="shared-place-preview"] > .list-toolbar .icon-btn{
+      color:#fff!important;
+      background:rgba(20,20,24,.34)!important;
+      border-color:rgba(255,255,255,.18)!important;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    .panel[data-screen="shared-list-preview"] .shared-list-preview-scroll,
+    .panel[data-screen="shared-place-preview"] .list-detail-scroll{
+      padding-top:0!important;
+    }
+    .panel[data-screen="shared-list-preview"] #sharedListCover,
+    .panel[data-screen="shared-place-preview"] #sharedPlaceCover{
+      margin-top:0!important;
+    }
+
+    /* Board itself: remove unnecessary mobile-only top air. */
+    .board-sticky-header .community-intro{
+      padding-top:0!important;
+      padding-bottom:8px!important;
+    }
+    .board-sticky-header .explore-follow-stats{
+      margin-bottom:8px!important;
+      padding-bottom:8px!important;
+    }
+    .board-sticky-header .community-tabs{
+      margin-bottom:8px!important;
+    }
+    .board-scroll-search{
+      margin-top:8px!important;
+    }
+    #communityFollowingPanel .community-feed{
+      padding-top:0!important;
+    }
+    #communityPublishedPanel .explore-board-section:first-child{
+      margin-top:0!important;
+      padding-top:0!important;
+    }
+
+    /* 5. Places: remove desktop-width assumptions and preserve readable rows. */
+    .places-header .section-sub{
+      padding-left:14px!important;
+      padding-right:14px!important;
+    }
+    .places-overview{
+      margin-left:14px!important;
+      margin-right:14px!important;
+      gap:6px!important;
+    }
+    .places-overview-btn{
+      height:52px!important;
+      padding-left:3px!important;
+      padding-right:3px!important;
+    }
+    .places-area-head{
+      padding-left:14px!important;
+      padding-right:14px!important;
+    }
+    .places-area-scroll{
+      padding-left:14px!important;
+      padding-right:14px!important;
+    }
+    .places-header .search-filter-row{
+      margin-left:14px!important;
+      margin-right:14px!important;
+      gap:6px!important;
+    }
+    .places-header .filter-open-btn{
+      width:42px!important;
+      height:42px!important;
+      flex:0 0 42px!important;
+    }
+    .places-header .searchbox{
+      min-width:0!important;
+      height:42px!important;
+    }
+    .place-row{
+      margin-left:14px!important;
+      margin-right:14px!important;
+      gap:9px!important;
+      min-width:0!important;
+    }
+    .place-thumb{
+      width:62px!important;
+      height:62px!important;
+      flex:0 0 62px!important;
+      border-radius:14px!important;
+    }
+    .place-copy{
+      min-width:0!important;
+    }
+    .place-copy strong{
+      font-size:14px!important;
+    }
+    .place-going-col{
+      width:44px!important;
+      flex:0 0 44px!important;
+    }
+    .going-btn,
+    .going-btn:not(.active){
+      width:44px!important;
+      height:42px!important;
+      font-size:9.5px!important;
+    }
+
+    /* 6. Safari date controls need their own line on narrow portrait. */
+    .trip-form-grid{
+      grid-template-columns:1fr!important;
+      gap:11px!important;
+    }
+    .trip-sheet-field{
+      min-width:0!important;
+    }
+    .trip-sheet-field input[type="date"]{
+      display:block;
+      width:100%!important;
+      max-width:100%!important;
+      min-width:0!important;
+      box-sizing:border-box!important;
+      -webkit-appearance:none;
+      appearance:none;
+      min-height:44px;
+    }
+
+    /* Bottom chrome respects the real home indicator. */
+    .bottombar{
+      padding-bottom:max(10px,env(safe-area-inset-bottom))!important;
+    }
+    .share-panel{
+      padding-bottom:max(22px,calc(env(safe-area-inset-bottom) + 14px))!important;
+    }
   }
 
-  /* Back arrows have the same tactile footprint across detail/utility screens. */
-  .list-toolbar > .icon-btn:first-child,
-  .trip-detail-top > .icon-btn:first-child,
-  .secondary-screen-head > .icon-btn:first-child,
-  .secondary-screen-head > div:first-child > .icon-btn:first-child,
-  .inbox-head-top > .icon-btn:first-child,
-  .people-list-top > .icon-btn:first-child{
-    flex:0 0 38px;
-    width:38px;
-    height:38px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  /* Search language and geometry remain consistent without redesigning each feature. */
-  .search-filter-row .searchbox,
-  .people-list-search-wrap{
-    font-size:14px;
+  /* Extra-small iPhones: keep Places controls usable rather than squeezed. */
+  @media (max-width: 350px) {
+    .places-overview{
+      grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    }
+    .places-overview-btn{
+      height:48px!important;
+    }
   }
 </style>
 </head>
@@ -2124,7 +2330,7 @@
           <div class="places-area-scroll" id="placesAreaScroll"></div>
         </div>
         <div class="search-filter-row">
-          <input class="searchbox" id="placesSearch" type="text" placeholder="Search">
+          <input class="searchbox" id="placesSearch" type="text" placeholder="Search with keywords">
           <button class="filter-open-btn" id="placesFilterBtn" aria-label="Filters" type="button">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
             <span class="filter-badge" id="placesFilterBadge" style="display:none;">0</span>
@@ -2289,7 +2495,7 @@
         </div>
         <div class="section-sub main-tab-subtitle">Your lists, organized your way.</div>
         <div class="search-filter-row">
-          <input class="searchbox" id="listsSearch" type="text" placeholder="Search">
+          <input class="searchbox" id="listsSearch" type="text" placeholder="Search with keywords">
           <button class="filter-open-btn" id="listsSelectBtn" aria-label="Select" type="button">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 2.5 2.5L16 9"/></svg>
           </button>
@@ -2341,7 +2547,7 @@
     <section class="panel trips-panel" data-screen="trips">
       <div class="trips-head"><div class="trips-head-row"><div style="display:flex;align-items:center;gap:10px;"><button class="icon-btn" id="tripsBackBtn" aria-label="Back" type="button"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button><h1>My Trips</h1></div><button class="trip-new-btn" id="newTripBtn" aria-label="Create trip" type="button"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
         <div class="search-filter-row">
-          <input class="searchbox" id="tripsSearch" type="text" placeholder="Search">
+          <input class="searchbox" id="tripsSearch" type="text" placeholder="Search with keywords">
           <button class="filter-open-btn" id="tripsSelectBtn" aria-label="Select" type="button">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 2.5 2.5L16 9"/></svg>
           </button>
@@ -2377,7 +2583,7 @@
     <section class="panel" data-screen="shared-trip-place"><div class="trip-detail-top"><button class="icon-btn" id="sharedTripPlaceBackBtn" aria-label="Back to shared trip" type="button"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button><span style="font-size:12px;font-weight:750;color:var(--ink-soft);">Shared Place</span><span style="width:36px;"></span></div><div class="shared-trip-scroll"><div class="list-cover no-label" id="sharedTripPlaceCover"></div><div class="list-detail-copy"><h1 id="sharedTripPlaceName">Place</h1><p id="sharedTripPlaceMeta"></p></div><div class="shared-place-safe-card">Shared place information only. Personal ratings, reminders, favorites, status, and list membership are not included.</div><div class="description-plain" id="sharedTripPlaceDescriptionCard"><p id="sharedTripPlaceDescription"></p></div><div class="icon-action-row" id="sharedTripPlaceLinks"><button class="icon-action-btn link-btn" id="sharedTripPlaceLinkBtn" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1"/></svg><span>Original</span></button><button class="icon-action-btn map-link-btn" id="sharedTripPlaceMapBtn" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Map</span></button></div><div class="description-plain" id="sharedTripPlaceTripNoteCard"><p><strong style="display:block;margin-bottom:5px;">Trip note</strong><span id="sharedTripPlaceTripNote"></span></p></div></div></section>
 
     <section class="panel" data-screen="collaborative-lists">
-      <div class="section-head secondary-screen-head" style="display:flex;align-items:center;justify-content:space-between;">
+      <div class="section-head" style="display:flex;align-items:center;justify-content:space-between;">
         <div style="display:flex;align-items:center;gap:10px;">
           <button class="icon-btn" id="collaborativeListsCloseBtn" aria-label="Back" type="button">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
@@ -2647,7 +2853,7 @@
     </section>
 
     <section class="panel" data-screen="profile-detail">
-      <div class="trip-detail-top"><button class="icon-btn" id="profileDetailBackBtn" aria-label="Back to Board" type="button"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button><span style="font-size:12px;font-weight:750;color:var(--ink-soft);">Your Activity</span><span style="width:36px;"></span></div>
+      <div class="trip-detail-top"><button class="icon-btn" id="profileDetailBackBtn" aria-label="Back to Explore" type="button"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button><span style="font-size:12px;font-weight:750;color:var(--ink-soft);">Your Activity</span><span style="width:36px;"></span></div>
 
       <div class="profile-stats-row" id="profileStatsRow">
         <div class="profile-stat profile-stat-lists">
@@ -2743,7 +2949,7 @@
 
     <section class="panel" data-screen="inbox-invite-preview">
       <div class="list-toolbar shared-preview-toolbar">
-        <button class="icon-btn" id="inboxInvitePreviewCloseBtn" aria-label="Back" type="button">
+        <button class="icon-btn" id="inboxInvitePreviewCloseBtn" aria-label="Close" type="button">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
         </button>
       </div>
@@ -2768,7 +2974,7 @@
 
     <section class="panel" data-screen="inbox-place-preview">
       <div class="list-toolbar place-detail-toolbar shared-preview-toolbar">
-        <button class="icon-btn" id="inboxPlacePreviewCloseBtn" aria-label="Back" type="button">
+        <button class="icon-btn" id="inboxPlacePreviewCloseBtn" aria-label="Close" type="button">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
         </button>
       </div>
@@ -2789,7 +2995,7 @@
 
     <section class="panel" data-screen="inbox-list-preview">
       <div class="list-toolbar shared-preview-toolbar">
-        <button class="icon-btn" id="inboxListPreviewCloseBtn" aria-label="Back" type="button">
+        <button class="icon-btn" id="inboxListPreviewCloseBtn" aria-label="Close" type="button">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
         </button>
       </div>
@@ -2825,7 +3031,7 @@
     </div>
 
     <section class="panel" data-screen="settings-list">
-      <div class="section-head secondary-screen-head" style="display:flex;align-items:center;gap:10px;">
+      <div class="section-head" style="display:flex;align-items:center;gap:10px;">
         <button class="icon-btn" id="settingsListCloseBtn" aria-label="Back" type="button">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
         </button>
@@ -7609,10 +7815,18 @@
   let listDetailOrigin = 'lists';
   function goBackFromListDetail() {
     const list = LISTS[currentListId];
-    const target = list ? (list.collaborative ? 'collaborative-lists' : 'lists')
-      : (listDetailOrigin === 'collaborative-lists' ? 'collaborative-lists' : 'lists');
+    let target = 'lists';
+    if (list && list.collaborative) target = 'collaborative-lists';
+    else if (['profile','user-profile','people-list'].includes(listDetailOrigin)) target = listDetailOrigin;
+    else if (listDetailOrigin === 'collaborative-lists') target = 'collaborative-lists';
+
     showScreen(target);
-    document.querySelectorAll('.bnav').forEach(nav => nav.classList.toggle('active', nav.dataset.target === 'lists'));
+    document.querySelectorAll('.bnav').forEach(nav => {
+      const navTarget = target === 'profile' ? 'profile'
+        : (target === 'lists' || target === 'collaborative-lists' ? 'lists' : '');
+      nav.classList.toggle('active', !!navTarget && nav.dataset.target === navTarget);
+    });
+    restoreBoardScroll(target);
   }
   function openList(id, origin) {
     const list = LISTS[id];
@@ -8388,6 +8602,19 @@
   }
 
   let sharedListReturnTarget = 'lists';
+  let boardReturnScrollTop = 0;
+  function rememberBoardScroll(returnTarget) {
+    if (returnTarget !== 'profile') return;
+    const boardPanel = document.querySelector('.panel[data-screen="profile"]');
+    if (boardPanel) boardReturnScrollTop = boardPanel.scrollTop || 0;
+  }
+  function restoreBoardScroll(target) {
+    if (target !== 'profile') return;
+    requestAnimationFrame(() => {
+      const boardPanel = document.querySelector('.panel[data-screen="profile"]');
+      if (boardPanel) boardPanel.scrollTop = boardReturnScrollTop;
+    });
+  }
   function personalSourceListCopy(sourceListId) {
     return Object.values(LISTS).find(list => !list.ownerId && list.sourceListId === sourceListId) || null;
   }
@@ -8399,6 +8626,7 @@
     const list = LISTS[listId];
     if (!list) return;
     sharedListReturnTarget = returnTarget || 'lists';
+    rememberBoardScroll(sharedListReturnTarget);
     sharedListPreviewId = listId;
     sharedListPreviewMode = previewMode || 'visitor';
     const ownPublishedPreview = sharedListPreviewMode === 'own-published';
@@ -8440,6 +8668,7 @@
     sharedListPreviewMode = null;
     showScreen(nextTarget);
     document.querySelectorAll('.bnav').forEach(nav => nav.classList.toggle('active', nav.dataset.target === nextTarget));
+    restoreBoardScroll(nextTarget);
   }
 
   function checkForSharedListLink() {
@@ -8481,9 +8710,10 @@
       const newPlaceIds = sourceListNewPlaceIds(list, personalCopy);
       if (!newPlaceIds.length) {
         const personalCopyId = Object.keys(LISTS).find(id => LISTS[id] === personalCopy);
+        const copyOrigin = sharedListReturnTarget || 'lists';
         sharedListPreviewId = null;
         sharedListPreviewMode = null;
-        if (personalCopyId) openList(personalCopyId, 'lists');
+        if (personalCopyId) openList(personalCopyId, copyOrigin);
         return;
       }
       let added = 0;
@@ -8535,6 +8765,7 @@
     const p = PLACES[placeId];
     if (!p) return;
     sharedPlaceReturnTarget = returnTarget || 'places';
+    rememberBoardScroll(sharedPlaceReturnTarget);
     sharedPlacePreviewId = placeId;
     sharedPlacePreviewMode = previewMode || 'visitor';
     const ownPublishedPreview = sharedPlacePreviewMode === 'own-published';
@@ -8596,6 +8827,7 @@
     sharedPlacePreviewMode = null;
     showScreen(nextTarget);
     document.querySelectorAll('.bnav').forEach(nav => nav.classList.toggle('active', nav.dataset.target === nextTarget));
+    restoreBoardScroll(nextTarget);
   }
 
   document.getElementById('sharedPlaceCloseBtn').addEventListener('click', () => closeSharedPlacePreview(sharedPlaceReturnTarget));
