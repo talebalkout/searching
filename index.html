@@ -5544,7 +5544,7 @@
 
   function placeThumbStyle(p) {
     const cover = p.customPhoto || (p.photos && p.photos[0]);
-    if (cover) return `background-image:url(${cover});background-size:cover;background-position:center;`;
+    if (cover) return `background-image:url(${cover});background-size:cover;background-position:center;background-repeat:no-repeat;`;
     if (p.grad === DEFAULT_PLACE_GRAD) return DEFAULT_PLACE_STYLE;
     return `background:${p.grad};`;
   }
@@ -7736,11 +7736,19 @@
     if (card) {
       card.className = `mini-card list-card ${cover}`;
       card.style.backgroundImage = '';
+      card.style.backgroundColor = '';
+      card.style.backgroundSize = '';
+      card.style.backgroundPosition = '';
+      card.style.backgroundRepeat = '';
     }
     if (currentListId === id) {
       const coverEl = document.getElementById('listCover');
       coverEl.className = 'list-cover ' + cover;
       coverEl.style.backgroundImage = '';
+      coverEl.style.backgroundColor = '';
+      coverEl.style.backgroundSize = '';
+      coverEl.style.backgroundPosition = '';
+      coverEl.style.backgroundRepeat = '';
     }
     toast('Cover updated');
   }
@@ -7753,16 +7761,20 @@
     const card = document.querySelector(`[data-open-list="${id}"]`);
     if (card) {
       card.className = 'mini-card list-card';
+      card.style.backgroundColor = '';
       card.style.backgroundImage = `url(${dataUrl})`;
       card.style.backgroundSize = 'cover';
       card.style.backgroundPosition = 'center';
+      card.style.backgroundRepeat = 'no-repeat';
     }
     if (currentListId === id) {
       const coverEl = document.getElementById('listCover');
       coverEl.className = 'list-cover';
+      coverEl.style.backgroundColor = '';
       coverEl.style.backgroundImage = `url(${dataUrl})`;
       coverEl.style.backgroundSize = 'cover';
       coverEl.style.backgroundPosition = 'center';
+      coverEl.style.backgroundRepeat = 'no-repeat';
     }
     toast('Cover updated');
   }
@@ -10887,6 +10899,38 @@
     bottomBarForA11y.addEventListener('click', () => requestAnimationFrame(syncBottomNavAccessibility));
   }
   syncBottomNavAccessibility();
+
+  // ---- TEMPORARY DEBUG TOOL ----
+  // Long-press (about 3/4 second) on any list cover or list card to see
+  // its actual live background styles on screen. Remove once diagnosed.
+  (function setupCoverDebugInspector() {
+    let pressTimer = null;
+    let pressedEl = null;
+    function showDebugInfo(el) {
+      const cs = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      const lines = [
+        'ELEMENT: ' + el.className,
+        'size: ' + Math.round(rect.width) + ' x ' + Math.round(rect.height),
+        'background-image: ' + (cs.backgroundImage.length > 60 ? cs.backgroundImage.slice(0, 60) + '...(truncated)' : cs.backgroundImage),
+        'background-color: ' + cs.backgroundColor,
+        'background-size: ' + cs.backgroundSize,
+        'background-position: ' + cs.backgroundPosition,
+        'background-repeat: ' + cs.backgroundRepeat,
+        'inline style attr: ' + (el.getAttribute('style') || '(none)')
+      ];
+      alert(lines.join('\n'));
+    }
+    document.addEventListener('touchstart', e => {
+      const target = e.target.closest('.list-card, .list-cover');
+      if (!target) return;
+      pressedEl = target;
+      pressTimer = setTimeout(() => { showDebugInfo(pressedEl); pressedEl = null; }, 700);
+    }, { passive: true });
+    ['touchend', 'touchmove', 'touchcancel'].forEach(evt => {
+      document.addEventListener(evt, () => { clearTimeout(pressTimer); }, { passive: true });
+    });
+  })();
 </script>
 
 </body>
