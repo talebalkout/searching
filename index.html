@@ -1462,7 +1462,7 @@
   /* Toolbars feel like navigation chrome rather than floating web controls. */
   .list-toolbar,.trip-detail-top{
     min-height:58px;
-    padding-top:max(10px,env(safe-area-inset-top));
+    padding-top:10px;
     background:rgba(255,255,255,.94);
     -webkit-backdrop-filter:saturate(180%) blur(16px);
     backdrop-filter:saturate(180%) blur(16px);
@@ -1744,13 +1744,6 @@
   /* Board keeps the same alignment despite its sticky container. */
   .board-sticky-header .main-tab-title{
     padding-left:76px!important;
-    padding-right:18px!important;
-  }
-
-  /* Lists + Board subtitle alignment correction */
-  .lists-header .section-sub.main-tab-subtitle,
-  .board-sticky-header .community-intro.main-tab-subtitle{
-    padding-left:18px!important;
     padding-right:18px!important;
   }
 
